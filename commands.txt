@@ -1,0 +1,39 @@
+mkdir Reactivities
+cd Reactivities
+dotnet new sln
+dotnet new classlib -n Domain <-- contains business entities
+dotnet new classlib -n Application <-- business logic
+dotnet new classlib -n Persistence <-- db logic 
+dotnet new webapi -n API
+
+add projects to main sln (reactivities)
+dotnet sln add Domain/ <-- add all new projects
+
+add references --> 
+cd Application/
+dotnet add reference ../Domain/
+dotnet add reference ../Persistence/
+
+cd API/
+dotnet add reference ../Application/
+
+cd Persistence/
+dotnet add reference ../Domain/
+
+dotnet run -p API/
+
+dotnet ef migrations add InitialCreate -p Persistence/ -s API/
+
+dotnet restore
+
+to create database-> add code in Program.cs
+cd API/
+dotnet watch run <-- server running while debug
+
+CLIENT SIDE-
+in root folder (CodeMeetup)
+ npx create-react-app client-app --use-npm --typescript
+
+ in tsconfig.json->
+ (optional) remove strict property
+ add property 'experimentalDecorators: true' <-- helpful for attributes
