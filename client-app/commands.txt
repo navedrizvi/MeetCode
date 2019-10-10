@@ -1,3 +1,10 @@
+in root folder (CodeMeetup)
+ npx create-react-app client-app --use-npm --typescript
+
+ in tsconfig.json->
+ (optional) remove strict property
+ add property 'experimentalDecorators: true' <-- helpful for attributes
+ 
 sudo npm install axios
 
 #install semantic ui react 

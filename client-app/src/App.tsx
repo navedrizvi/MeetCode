@@ -6,6 +6,7 @@ import { Header, Icon, List } from 'semantic-ui-react';
 class App extends React.Component {
   state = {
     values: []
+    // value: Object
   };
 
   componentDidMount() {
@@ -14,6 +15,12 @@ class App extends React.Component {
         values: response.data
       });
     });
+    // axios.get('http://localhost:5000/api/values/2').then(response => {
+    //   this.setState({
+    //     // value: Object.entries(response.data)
+    //     value: response.data
+    //   });
+    // });
   }
 
   render() {
@@ -21,7 +28,7 @@ class App extends React.Component {
       <div>
         <Header as='h2'>
           <Icon name='group' />
-          <Header.Content>Uptime Guarantee</Header.Content>
+          <Header.Content>Meet Code</Header.Content>
         </Header>
         <List>
           {this.state.values.map((v: any) => (

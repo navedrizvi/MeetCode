@@ -30,10 +30,5 @@ to create database-> add code in Program.cs
 cd API/
 dotnet watch run <-- server running while debug
 
-CLIENT SIDE-
-in root folder (CodeMeetup)
- npx create-react-app client-app --use-npm --typescript
-
- in tsconfig.json->
- (optional) remove strict property
- add property 'experimentalDecorators: true' <-- helpful for attributes
+AFter adding new entity, add dbset to datacontext then-
+dotnet ef migrations add "ActivityEntityAdded" -p Persistence/ -s API/
