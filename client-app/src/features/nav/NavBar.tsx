@@ -1,0 +1,32 @@
+import React from 'react';
+import { Menu, Container, Button } from 'semantic-ui-react';
+
+interface IProps {
+  openCreateForm: () => void;
+}
+
+export const NavBar: React.FC<IProps> = ({ openCreateForm }) => {
+  return (
+    <div>
+      return (
+      <Menu fixed='top' inverted>
+        <Container>
+          <Menu.Item header>
+            <img
+              src='/assets/logo.png'
+              alt='logo.png'
+              style={{ marginRight: 10 }}
+            />
+            MeetCode
+          </Menu.Item>
+
+          <Menu.Item name='Meetups' />
+          <Menu.Item>
+            <Button onClick={openCreateForm} positive content='Create Meetup' />
+          </Menu.Item>
+        </Container>
+      </Menu>
+      );
+    </div>
+  );
+};

@@ -43,7 +43,7 @@ namespace Application.Meetings
                 };
 
                 Context.Meetings.Add(meeting);
-                var success = await Context.SaveChangesAsync() > 0;
+                var success = await Context.SaveChangesAsync() > 0; //The task result contains the number of state entries written to the underlying database. 
 
                 if (success) return Unit.Value;
                 throw new Exception("Problem saving changes");
