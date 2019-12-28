@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, List } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import { IMeeting } from '../../../app/models/meetings';
 import { MeetingList } from './MeetingList';
 import { MeetingDetails } from '../details/MeetingDetails';
@@ -12,6 +12,9 @@ interface IProps {
   editMode: boolean;
   setEditMode: (editMode: boolean) => void;
   setSelectedMeeting: (meeting: IMeeting | null) => void;
+  createMeeting: (meeting: IMeeting) => void;
+  editMeeting: (meeting: IMeeting) => void;
+  deleteMeeting: (id: string) => void;
 }
 export const MeetingDashboard: React.FC<IProps> = ({
   meetings,
@@ -19,12 +22,19 @@ export const MeetingDashboard: React.FC<IProps> = ({
   selectedMeeting,
   editMode,
   setEditMode,
-  setSelectedMeeting
+  setSelectedMeeting,
+  createMeeting,
+  editMeeting,
+  deleteMeeting
 }) => {
   return (
     <Grid>
       <Grid.Column width={10}>
-        <MeetingList meetings={meetings} selectMeeting={selectMeeting} />
+        <MeetingList
+          meetings={meetings}
+          selectMeeting={selectMeeting}
+          deleteMeeting={deleteMeeting}
+        />
       </Grid.Column>
       <Grid.Column width={6}>
         {selectedMeeting && !editMode && (
@@ -35,7 +45,13 @@ export const MeetingDashboard: React.FC<IProps> = ({
           />
         )}
         {editMode && (
-          <MeetingForm setEditMode={setEditMode} meeting={selectedMeeting!} />
+          <MeetingForm
+            key={(selectMeeting && selectedMeeting.id) || 0}
+            createMeeting={createMeeting}
+            editMeeting={editMeeting}
+            setEditMode={setEditMode}
+            meeting={selectedMeeting!}
+          />
         )}
       </Grid.Column>
     </Grid>

@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { Segment, Form, Button } from 'semantic-ui-react';
 import { IMeeting } from '../../../app/models/meetings';
+import { v4 as uuid } from 'uuid';
 
 interface IProps {
   setEditMode: (editMode: boolean) => void;
   meeting: IMeeting;
+  createMeeting: (meeting: IMeeting) => void;
+  editMeeting: (meeting: IMeeting) => void;
 }
 
 export const MeetingForm: React.FC<IProps> = ({
   setEditMode,
-  meeting: initialFormState
+  meeting: initialFormState,
+  createMeeting,
+  editMeeting
 }) => {
   const initializeForm = () => {
     if (initialFormState) {
@@ -29,19 +34,68 @@ export const MeetingForm: React.FC<IProps> = ({
 
   const [meeting, setMeeting] = useState<IMeeting>(initializeForm);
 
+  const handleSubmit = () => {
+    if (meeting.id.length === 0) {
+      //if a meeting exists in state
+      let newMeeting = {
+        ...meeting,
+        id: uuid()
+      };
+      createMeeting(newMeeting);
+    } else {
+      editMeeting(meeting);
+    }
+  };
+
+  const handleInputChange = (
+    event: FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    //onchange event from handler
+    const { name, value } = event.currentTarget;
+    setMeeting({ ...meeting, [name]: value }); //spread properties of meeting
+  };
+
   return (
     <Segment clearing>
-      <Form>
-        <Form.Input placeholder='Title' value={meeting.title} />
+      <Form onSubmit={handleSubmit}>
         <Form.Input
+          onChange={handleInputChange}
+          placeholder='Title'
+          name='title'
+          value={meeting.title}
+        />
+        <Form.Input
+          onChange={handleInputChange}
           rows={2}
           placeholder='Description'
+          name='description'
           value={meeting.description}
         />
-        <Form.Input placeholder='Category' value={meeting.category} />
-        <Form.Input type='date' placeholder='Date' value={meeting.date} />
-        <Form.Input placeholder='City' value={meeting.city} />
-        <Form.Input placeholder='Venue' value={meeting.venue} />
+        <Form.Input
+          onChange={handleInputChange}
+          name='category'
+          placeholder='Category'
+          value={meeting.category}
+        />
+        <Form.Input
+          onChange={handleInputChange}
+          name='date'
+          type='datetime-local'
+          placeholder='Date'
+          value={meeting.date}
+        />
+        <Form.Input
+          onChange={handleInputChange}
+          name='city'
+          placeholder='City'
+          value={meeting.city}
+        />
+        <Form.Input
+          onChange={handleInputChange}
+          name='venue'
+          placeholder='Venue'
+          value={meeting.venue}
+        />
         <Button positive floated='right' type='submit' content='Submit' />
         <Button
           onClick={() => setEditMode(false)}

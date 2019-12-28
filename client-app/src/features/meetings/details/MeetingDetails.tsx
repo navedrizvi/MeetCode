@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Icon, Button, Image } from 'semantic-ui-react';
+import { Card, Button, Image } from 'semantic-ui-react';
 import { IMeeting } from '../../../app/models/meetings';
 
 interface IProps {

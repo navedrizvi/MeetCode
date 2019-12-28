@@ -7,26 +7,22 @@ interface IProps {
 
 export const NavBar: React.FC<IProps> = ({ openCreateForm }) => {
   return (
-    <div>
-      return (
-      <Menu fixed='top' inverted>
-        <Container>
-          <Menu.Item header>
-            <img
-              src='/assets/logo.png'
-              alt='logo.png'
-              style={{ marginRight: 10 }}
-            />
-            MeetCode
-          </Menu.Item>
+    <Menu fixed='top' inverted>
+      <Container>
+        <Menu.Item header>
+          <img
+            src='/assets/logo.png'
+            alt='logo.png'
+            style={{ marginRight: 10 }}
+          />
+          MeetCode
+        </Menu.Item>
 
-          <Menu.Item name='Meetups' />
-          <Menu.Item>
-            <Button onClick={openCreateForm} positive content='Create Meetup' />
-          </Menu.Item>
-        </Container>
-      </Menu>
-      );
-    </div>
+        <Menu.Item name='Meetups' />
+        <Menu.Item>
+          <Button onClick={openCreateForm} positive content='Create Meetup' />
+        </Menu.Item>
+      </Container>
+    </Menu>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
-import { Header, Icon, List, Container } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import { IMeeting } from '../models/meetings';
 import { MeetingDashboard } from '../../features/meetings/dashboard/MeetingDashboard';
 import { NavBar } from '../../features/nav/NavBar';
@@ -10,8 +10,9 @@ const App = () => {
   const [selectedMeeting, setSelectedMeeting] = useState<IMeeting | null>(null);
   const [editMode, setEditMode] = useState(false);
 
-  const handleSelectedMeeting = (id: string) => {
+  const handleSelectMeeting = (id: string) => {
     setSelectedMeeting(meetings.filter(m => m.id === id)[0]);
+    setEditMode(false);
   };
 
   const handleOpenCreateForm = () => {
@@ -19,11 +20,32 @@ const App = () => {
     setEditMode(true);
   };
 
+  const handleCreateMeeting = (meeting: IMeeting) => {
+    setMeetings([...meetings, meeting]); //to combine the two
+    setSelectedMeeting(meeting);
+    setEditMode(false);
+  };
+
+  const handleEditMeeting = (meeting: IMeeting) => {
+    setMeetings([...meetings.filter(m => m.id !== meeting.id), meeting]);
+    setSelectedMeeting(meeting);
+    setEditMode(false);
+  };
+
+  const handleDeleteMeeting = (id: string) => {
+    setMeetings([...meetings.filter(m => m.id !== id)]);
+  };
+
   useEffect(() => {
     axios
       .get<IMeeting[]>('http://localhost:5000/api/meetings')
       .then(response => {
-        setMeetings(response.data);
+        let meetings: IMeeting[] = [];
+        response.data.forEach(meeting => {
+          meeting.date = meeting.date.split('.')[0]; //cleanup to remove date accuracy for inputs
+          meetings.push(meeting);
+        });
+        setMeetings(meetings);
       });
   }, []); //empty array ensures useEffect runs only once, so no additional API calls are made
 
@@ -33,11 +55,14 @@ const App = () => {
       <Container style={{ marginTop: '7em' }}>
         <MeetingDashboard
           meetings={meetings}
-          selectMeeting={handleSelectedMeeting}
+          selectMeeting={handleSelectMeeting}
           selectedMeeting={selectedMeeting!}
           editMode={editMode}
           setEditMode={setEditMode}
           setSelectedMeeting={setSelectedMeeting}
+          createMeeting={handleCreateMeeting}
+          editMeeting={handleEditMeeting}
+          deleteMeeting={handleDeleteMeeting}
         ></MeetingDashboard>
       </Container>
     </Fragment>

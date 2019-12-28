@@ -1,18 +1,23 @@
 import React from 'react';
-import { Image, Item, Segment, Label, Button } from 'semantic-ui-react';
+import { Item, Segment, Label, Button } from 'semantic-ui-react';
 import { IMeeting } from '../../../app/models/meetings';
 
 interface IProps {
   meetings: IMeeting[];
   selectMeeting: (id: string) => void;
+  deleteMeeting: (id: string) => void;
 }
 
-export const MeetingList: React.FC<IProps> = ({ meetings, selectMeeting }) => {
+export const MeetingList: React.FC<IProps> = ({
+  meetings,
+  selectMeeting,
+  deleteMeeting
+}) => {
   return (
     <Segment clearing>
       <Item.Group divided>
         {meetings.map(meeting => (
-          <Item>
+          <Item key={meeting.id}>
             <Item.Content>
               <Item.Header as='a'>{meeting.title}</Item.Header>
               <Item.Meta>{meeting.date}</Item.Meta>
@@ -28,6 +33,12 @@ export const MeetingList: React.FC<IProps> = ({ meetings, selectMeeting }) => {
                   floated='right'
                   content='View'
                   color='blue'
+                />
+                <Button
+                  onClick={() => deleteMeeting(meeting.id)}
+                  floated='right'
+                  content='Delete'
+                  color='red'
                 />
                 <Label basic content={meeting.category} />
               </Item.Extra>
