@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Grid } from 'semantic-ui-react';
 import MeetingList from './MeetingList';
 import MeetingDetails from '../details/MeetingDetails';
@@ -8,19 +8,16 @@ import MeetupStore from '../../../app/stores/meetupStore';
 
 const MeetingDashboard: React.FC = () => {
   const meetingStore = useContext(MeetupStore);
-  const { selectedMeeting, editMode } = meetingStore;
+  const { meeting, editMode } = meetingStore;
   return (
     <Grid>
       <Grid.Column width={10}>
         <MeetingList />
       </Grid.Column>
       <Grid.Column width={6}>
-        {selectedMeeting && !editMode && <MeetingDetails />}
+        {meeting && !editMode && <MeetingDetails />}
         {editMode && (
-          <MeetingForm
-            key={(selectedMeeting && selectedMeeting.id) || 0}
-            meeting={selectedMeeting!}
-          />
+          <MeetingForm key={(meeting && meeting.id) || 0} meeting={meeting!} />
         )}
       </Grid.Column>
     </Grid>

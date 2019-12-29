@@ -2,8 +2,9 @@ import React, { useContext } from 'react';
 import { Item, Segment, Label, Button } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
 import MeetupStore from '../../../app/stores/meetupStore';
+import { Link } from 'react-router-dom';
 
-const MeetingList: React.FC = ({}) => {
+const MeetingList: React.FC = () => {
   const meetingStore = useContext(MeetupStore);
   const {
     meetingsByDate,
@@ -28,7 +29,8 @@ const MeetingList: React.FC = ({}) => {
               </Item.Description>
               <Item.Extra>
                 <Button
-                  onClick={() => selectMeeting(meeting.id)}
+                  as={Link}
+                  to={`/meetups/${meeting.id}`}
                   floated='right'
                   content='View'
                   color='blue'

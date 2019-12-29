@@ -1,16 +1,11 @@
 import React, { useContext } from 'react';
 import { Card, Button, Image } from 'semantic-ui-react';
-import { IMeeting } from '../../../app/models/meetings';
 import MeetupStore from '../../../app/stores/meetupStore';
 import { observer } from 'mobx-react-lite';
 
 const MeetingDetails: React.FC = () => {
   const meetingStore = useContext(MeetupStore);
-  const {
-    selectedMeeting: meeting,
-    openEditForm,
-    cancelSelectedMeeting
-  } = meetingStore; //call it meetup
+  const { meeting, openEditForm, cancelSelectedMeeting } = meetingStore; //call it meetup
   return (
     <Card>
       <Image

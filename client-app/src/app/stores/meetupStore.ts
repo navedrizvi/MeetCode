@@ -10,7 +10,7 @@ class MeetupStore {
   @observable meetingRegistry = new Map();
   @observable meetings: IMeeting[] = [];
   @observable loadingInitial = false; //for loader
-  @observable selectedMeeting: IMeeting | undefined;
+  @observable meeting: IMeeting | undefined;
   @observable editMode = false;
   @observable submitting = false; //for loader
   @observable target = ''; //for loader to target  button. Isolate loading indicator for individual buttons
@@ -42,6 +42,33 @@ class MeetupStore {
     }
   };
 
+  //will be used for loading single acitivty through router Link/url
+  @action loadMeetup = async (id: string) => {
+    let meeting = this.getMeeting(id);
+    if (meeting) {
+      this.meeting = meeting;
+    } else {
+      this.loadingInitial = true;
+      try {
+        meeting = agent.Meetings.details(id);
+        runInAction('getting meetup', () => {
+          this.meeting = meeting;
+          this.loadingInitial = false;
+        });
+      } catch (e) {
+        runInAction('get meetup error', () => {
+          this.loadingInitial = false;
+        });
+        console.log(e);
+      }
+    }
+  };
+
+  //helper
+  getMeeting = (id: string) => {
+    return this.meetingRegistry.get(id);
+  };
+
   @action createMeeting = async (meeting: IMeeting) => {
     this.submitting = true;
     try {
@@ -60,7 +87,7 @@ class MeetupStore {
   };
 
   @action selectMeeting = (id: string) => {
-    this.selectedMeeting = this.meetingRegistry.get(id);
+    this.meeting = this.meetingRegistry.get(id);
     this.editMode = false;
   };
 
@@ -70,7 +97,7 @@ class MeetupStore {
       await agent.Meetings.update(meeting);
       runInAction('editing meeting', () => {
         this.meetingRegistry.set(meeting.id, meeting);
-        this.selectedMeeting = meeting;
+        this.meeting = meeting;
         this.editMode = false;
         this.submitting = false;
       });
@@ -105,12 +132,12 @@ class MeetupStore {
   };
 
   @action openEditForm = (id: string) => {
-    this.selectedMeeting = this.meetingRegistry.get(id);
+    this.meeting = this.meetingRegistry.get(id);
     this.editMode = true;
   };
 
   @action cancelSelectedMeeting = () => {
-    this.selectedMeeting = undefined;
+    this.meeting = undefined;
   };
 
   @action cancelFormOpen = () => {
@@ -119,7 +146,7 @@ class MeetupStore {
 
   @action openCreateForm = () => {
     this.editMode = true;
-    this.selectedMeeting = undefined;
+    this.meeting = undefined;
   };
 }
 

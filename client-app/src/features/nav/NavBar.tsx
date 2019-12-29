@@ -2,13 +2,14 @@ import React, { useContext } from 'react';
 import { Menu, Container, Button } from 'semantic-ui-react';
 import MeetupStore from '../../app/stores/meetupStore';
 import { observer } from 'mobx-react-lite';
+import { Link, NavLink } from 'react-router-dom';
 
 const NavBar: React.FC = () => {
   const meetingStore = useContext(MeetupStore);
   return (
     <Menu fixed='top' inverted>
       <Container>
-        <Menu.Item header>
+        <Menu.Item header exact as={NavLink} to='/'>
           <img
             src='/assets/logo.png'
             alt='logo.png'
@@ -17,10 +18,11 @@ const NavBar: React.FC = () => {
           MeetCode
         </Menu.Item>
 
-        <Menu.Item name='Meetups' />
+        <Menu.Item name='Meetups' as={NavLink} to='/meetups' />
         <Menu.Item>
           <Button
-            onClick={meetingStore.openCreateForm}
+            as={NavLink}
+            to='/createMeetup'
             positive
             content='Create Meetup'
           />

@@ -5,6 +5,10 @@ import NavBar from '../../features/nav/NavBar';
 import { LoadingComponent } from './LoadingComponent';
 import MeetupStore from '../stores/meetupStore';
 import { observer } from 'mobx-react-lite';
+import { Route } from 'react-router-dom';
+import HomePage from '../../features/home/HomePage';
+import MeetingForm from '../../features/meetings/form/MeetingForm';
+import MeetingDetails from '../../features/meetings/details/MeetingDetails';
 
 const App = () => {
   const meetupStore = useContext(MeetupStore);
@@ -20,48 +24,13 @@ const App = () => {
     <Fragment>
       <NavBar />
       <Container style={{ marginTop: '7em' }}>
-        <MeetingDashboard />
+        <Route exact path='/' component={HomePage} />
+        <Route exact path='/meetups' component={MeetingDashboard} />
+        <Route path='/meetups/:id ' component={MeetingDetails} />
+        <Route path='/createMeetup' component={MeetingForm} />
       </Container>
     </Fragment>
   );
 };
 
-export default observer(App); //higher order component to turn component to an observer
-
-// Class component example-
-// interface IState {
-//   meetings: IMeeting[];
-// }
-
-// class App extends React.Component<{}, IState> {
-//   //no properties being passed
-//   state: IState = {
-//     meetings: []
-//   };
-
-//   componentDidMount() {
-//     axios
-//       .get<IMeeting[]>('http://localhost:5000/api/meetings')
-//       .then(response => {
-//         this.setState({
-//           meetings: response.data
-//         });
-//       });
-//   }
-
-//   render() {
-//     return (
-//       <div>
-//         <Header as='h2'>
-//           <Icon name='group' />
-//           <Header.Content>Meet Code</Header.Content>
-//         </Header>
-//         <List>
-//           {this.state.meetings.map(meeting => (
-//             <List.Item key={meeting.id}>{meeting.venue}</List.Item>
-//           ))}
-//         </List>
-//       </div>
-//     );
-//   }
-// }
+export default observer(App); //higher order component that turns it to an observer
