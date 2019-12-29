@@ -8,13 +8,15 @@ interface IProps {
   meeting: IMeeting;
   createMeeting: (meeting: IMeeting) => void;
   editMeeting: (meeting: IMeeting) => void;
+  submitting: boolean;
 }
 
 export const MeetingForm: React.FC<IProps> = ({
   setEditMode,
   meeting: initialFormState,
   createMeeting,
-  editMeeting
+  editMeeting,
+  submitting
 }) => {
   const initializeForm = () => {
     if (initialFormState) {
@@ -96,7 +98,13 @@ export const MeetingForm: React.FC<IProps> = ({
           placeholder='Venue'
           value={meeting.venue}
         />
-        <Button positive floated='right' type='submit' content='Submit' />
+        <Button
+          loading={submitting}
+          positive
+          floated='right'
+          type='submit'
+          content='Submit'
+        />
         <Button
           onClick={() => setEditMode(false)}
           floated='right'

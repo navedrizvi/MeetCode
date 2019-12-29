@@ -32,3 +32,8 @@ dotnet watch run <-- server running while debug
 
 AFter adding new entity, add dbset to datacontext then-
 dotnet ef migrations add "ActivityEntityAdded" -p Persistence/ -s API/
+
+
+client:
+npm install uuid --unsafe-perm=true <- to create Guid from client-side
+npm install mobx mobx-react-lite

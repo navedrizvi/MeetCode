@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { SyntheticEvent, useContext } from 'react';
 import { Item, Segment, Label, Button } from 'semantic-ui-react';
 import { IMeeting } from '../../../app/models/meetings';
+import { observer } from 'mobx-react-lite';
+import MeetupStore from '../../../app/stores/meetupStore';
 
 interface IProps {
-  meetings: IMeeting[];
-  selectMeeting: (id: string) => void;
-  deleteMeeting: (id: string) => void;
+  deleteMeeting: (event: SyntheticEvent<HTMLButtonElement>, id: string) => void;
+  submitting: boolean;
+  target: string;
 }
 
-export const MeetingList: React.FC<IProps> = ({
-  meetings,
-  selectMeeting,
-  deleteMeeting
+const MeetingList: React.FC<IProps> = ({
+  deleteMeeting,
+  submitting,
+  target
 }) => {
+  const meetingStore = useContext(MeetupStore);
+  const { meetings, selectMeeting } = meetingStore;
   return (
     <Segment clearing>
       <Item.Group divided>
@@ -35,7 +39,9 @@ export const MeetingList: React.FC<IProps> = ({
                   color='blue'
                 />
                 <Button
-                  onClick={() => deleteMeeting(meeting.id)}
+                  name={meeting.id}
+                  loading={target === meeting.id && submitting}
+                  onClick={e => deleteMeeting(e, meeting.id)} //the mouse event
                   floated='right'
                   content='Delete'
                   color='red'
@@ -49,3 +55,5 @@ export const MeetingList: React.FC<IProps> = ({
     </Segment>
   );
 };
+
+export default observer(MeetingList);
