@@ -1,62 +1,13 @@
-import React, {
-  useState,
-  useEffect,
-  Fragment,
-  SyntheticEvent,
-  useContext
-} from 'react';
+import React, { useEffect, Fragment, useContext } from 'react';
 import { Container } from 'semantic-ui-react';
-import { IMeeting } from '../models/meetings';
 import MeetingDashboard from '../../features/meetings/dashboard/MeetingDashboard';
 import NavBar from '../../features/nav/NavBar';
-import agent from '../api/agent';
 import { LoadingComponent } from './LoadingComponent';
 import MeetupStore from '../stores/meetupStore';
 import { observer } from 'mobx-react-lite';
 
 const App = () => {
   const meetupStore = useContext(MeetupStore);
-  const [meetings, setMeetings] = useState<IMeeting[]>([]);
-  const [selectedMeeting, setSelectedMeeting] = useState<IMeeting | null>(null);
-  const [editMode, setEditMode] = useState(false);
-  const [loading, setLoading] = useState(true); //for loader
-  const [submitting, setSummitting] = useState(false); //for loader
-  const [target, setTarget] = useState(''); //for loader to target  button. Isolate loading indicator for individual buttons
-
-  const handleSelectMeeting = (id: string) => {
-    setSelectedMeeting(meetings.filter(m => m.id === id)[0]);
-    setEditMode(false);
-  };
-
-  const handleOpenCreateForm = () => {
-    setSelectedMeeting(null);
-    setEditMode(true);
-  };
-
-  const handleEditMeeting = (meeting: IMeeting) => {
-    setSummitting(true);
-    agent.Meetings.update(meeting)
-      .then(() => {
-        setMeetings([...meetings.filter(m => m.id !== meeting.id), meeting]);
-        setSelectedMeeting(meeting);
-        setEditMode(false);
-      })
-      .then(() => setSummitting(false));
-  };
-
-  const handleDeleteMeeting = (
-    event: SyntheticEvent<HTMLButtonElement>,
-    id: string
-  ) => {
-    //add a warning
-    setSummitting(true);
-    setTarget(event.currentTarget.name);
-    agent.Meetings.delete(id)
-      .then(() => {
-        setMeetings([...meetings.filter(m => m.id !== id)]);
-      })
-      .then(() => setSummitting(false));
-  };
 
   useEffect(() => {
     meetupStore.loadMeetups();
@@ -69,14 +20,7 @@ const App = () => {
     <Fragment>
       <NavBar />
       <Container style={{ marginTop: '7em' }}>
-        <MeetingDashboard
-          setEditMode={setEditMode}
-          setSelectedMeeting={setSelectedMeeting}
-          editMeeting={handleEditMeeting}
-          deleteMeeting={handleDeleteMeeting}
-          submitting={submitting}
-          target={target}
-        ></MeetingDashboard>
+        <MeetingDashboard />
       </Container>
     </Fragment>
   );

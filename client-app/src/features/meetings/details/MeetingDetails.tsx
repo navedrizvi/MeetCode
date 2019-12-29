@@ -4,17 +4,13 @@ import { IMeeting } from '../../../app/models/meetings';
 import MeetupStore from '../../../app/stores/meetupStore';
 import { observer } from 'mobx-react-lite';
 
-interface IProps {
-  setEditMode: (editMode: boolean) => void;
-  setSelectedMeeting: (meeting: IMeeting | null) => void;
-}
-
-const MeetingDetails: React.FC<IProps> = ({
-  setEditMode,
-  setSelectedMeeting
-}) => {
+const MeetingDetails: React.FC = () => {
   const meetingStore = useContext(MeetupStore);
-  const { selectedMeeting: meeting } = meetingStore; //call it meetup
+  const {
+    selectedMeeting: meeting,
+    openEditForm,
+    cancelSelectedMeeting
+  } = meetingStore; //call it meetup
   return (
     <Card>
       <Image
@@ -25,20 +21,20 @@ const MeetingDetails: React.FC<IProps> = ({
       <Card.Content>
         <Card.Header>{meeting!.title}</Card.Header>
         <Card.Meta>
-          <span className='date'>{meeting.date}</span>
+          <span className='date'>{meeting!.date}</span>
         </Card.Meta>
         <Card.Description>{meeting!.description}</Card.Description>
       </Card.Content>
       <Card.Content extra>
         <Button.Group widths={2}>
           <Button
-            onClick={() => setEditMode(true)}
+            onClick={() => openEditForm(meeting!.id)}
             basic
             color='blue'
             content='Edit'
           ></Button>
           <Button
-            onClick={() => setSelectedMeeting(null)}
+            onClick={cancelSelectedMeeting}
             basic
             color='grey'
             content='Cancel'

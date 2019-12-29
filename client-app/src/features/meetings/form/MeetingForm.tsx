@@ -3,22 +3,21 @@ import { Segment, Form, Button } from 'semantic-ui-react';
 import { IMeeting } from '../../../app/models/meetings';
 import { v4 as uuid } from 'uuid';
 import MeetupStore from '../../../app/stores/meetupStore';
+import { observer } from 'mobx-react-lite';
 
 interface IProps {
-  setEditMode: (editMode: boolean) => void;
   meeting: IMeeting;
-  editMeeting: (meeting: IMeeting) => void;
-  submitting: boolean;
 }
 
-export const MeetingForm: React.FC<IProps> = ({
-  setEditMode,
-  meeting: initialFormState,
-  editMeeting,
-  submitting
-}) => {
+const MeetingForm: React.FC<IProps> = ({ meeting: initialFormState }) => {
+  //refer to meeting as initialFormState inside fn
   const meetingStore = useContext(MeetupStore);
-  const { createMeeting } = meetingStore;
+  const {
+    createMeeting,
+    editMeeting,
+    submitting,
+    cancelFormOpen
+  } = meetingStore;
   const initializeForm = () => {
     if (initialFormState) {
       return initialFormState;
@@ -107,7 +106,7 @@ export const MeetingForm: React.FC<IProps> = ({
           content='Submit'
         />
         <Button
-          onClick={() => setEditMode(false)}
+          onClick={cancelFormOpen}
           floated='right'
           type='submit'
           content='Cancel'
@@ -116,3 +115,5 @@ export const MeetingForm: React.FC<IProps> = ({
     </Segment>
   );
 };
+
+export default observer(MeetingForm);
