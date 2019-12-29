@@ -1,14 +1,22 @@
 import { createContext } from 'react';
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { IMeeting } from '../models/meetings';
 import agent from '../api/agent';
 
 class MeetupStore {
+  @observable meetingRegistry = new Map();
   @observable meetings: IMeeting[] = [];
   @observable loadingInitial = false;
-  @observable selectedMeetup: IMeeting | undefined;
+  @observable selectedMeeting: IMeeting | undefined;
   @observable editMode = false;
   @observable submitting = false;
+
+  @computed get meetingsByDate() {
+    //in ascending dates order
+    return Array.from(this.meetingRegistry.values()).sort(
+      (a, b) => Date.parse(a.date) - Date.parse(b.date)
+    );
+  }
 
   @action loadMeetups = async () => {
     this.loadingInitial = true;
@@ -16,7 +24,7 @@ class MeetupStore {
       const meetings = await agent.Meetings.list();
       meetings.forEach(meeting => {
         meeting.date = meeting.date.split('.')[0]; //cleanup to remove date accuracy for inputs
-        this.meetings.push(meeting);
+        this.meetingRegistry.set(meeting.id, meeting);
       });
       this.loadingInitial = false;
     } catch (error) {
@@ -29,7 +37,7 @@ class MeetupStore {
     this.submitting = true;
     try {
       await agent.Meetings.create(meeting);
-      this.meetings.push(meeting);
+      this.meetingRegistry.set(meeting.id, meeting);
       this.editMode = false;
       this.submitting = false;
     } catch (e) {
@@ -39,8 +47,13 @@ class MeetupStore {
   };
 
   @action selectMeeting = (id: string) => {
-    this.selectedMeetup = this.meetings.find(m => m.id === id);
+    this.selectedMeeting = this.meetingRegistry.get(id);
     this.editMode = false;
+  };
+
+  @action openCreateForm = () => {
+    this.editMode = true;
+    this.selectedMeeting = undefined;
   };
 }
 

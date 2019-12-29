@@ -1,12 +1,12 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, useContext } from 'react';
 import { Segment, Form, Button } from 'semantic-ui-react';
 import { IMeeting } from '../../../app/models/meetings';
 import { v4 as uuid } from 'uuid';
+import MeetupStore from '../../../app/stores/meetupStore';
 
 interface IProps {
   setEditMode: (editMode: boolean) => void;
   meeting: IMeeting;
-  createMeeting: (meeting: IMeeting) => void;
   editMeeting: (meeting: IMeeting) => void;
   submitting: boolean;
 }
@@ -14,10 +14,11 @@ interface IProps {
 export const MeetingForm: React.FC<IProps> = ({
   setEditMode,
   meeting: initialFormState,
-  createMeeting,
   editMeeting,
   submitting
 }) => {
+  const meetingStore = useContext(MeetupStore);
+  const { createMeeting } = meetingStore;
   const initializeForm = () => {
     if (initialFormState) {
       return initialFormState;

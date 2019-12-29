@@ -14,7 +14,7 @@ const MeetingDetails: React.FC<IProps> = ({
   setSelectedMeeting
 }) => {
   const meetingStore = useContext(MeetupStore);
-  const { selectedMeetup: meeting } = meetingStore; //call it meetup
+  const { selectedMeeting: meeting } = meetingStore; //call it meetup
   return (
     <Card>
       <Image

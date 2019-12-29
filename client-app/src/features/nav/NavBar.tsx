@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Menu, Container, Button } from 'semantic-ui-react';
+import MeetupStore from '../../app/stores/meetupStore';
+import { observer } from 'mobx-react-lite';
 
-interface IProps {
-  openCreateForm: () => void;
-}
-
-export const NavBar: React.FC<IProps> = ({ openCreateForm }) => {
+const NavBar: React.FC = () => {
+  const meetingStore = useContext(MeetupStore);
   return (
     <Menu fixed='top' inverted>
       <Container>
@@ -20,9 +19,15 @@ export const NavBar: React.FC<IProps> = ({ openCreateForm }) => {
 
         <Menu.Item name='Meetups' />
         <Menu.Item>
-          <Button onClick={openCreateForm} positive content='Create Meetup' />
+          <Button
+            onClick={meetingStore.openCreateForm}
+            positive
+            content='Create Meetup'
+          />
         </Menu.Item>
       </Container>
     </Menu>
   );
 };
+
+export default observer(NavBar);

@@ -8,7 +8,7 @@ import React, {
 import { Container } from 'semantic-ui-react';
 import { IMeeting } from '../models/meetings';
 import MeetingDashboard from '../../features/meetings/dashboard/MeetingDashboard';
-import { NavBar } from '../../features/nav/NavBar';
+import NavBar from '../../features/nav/NavBar';
 import agent from '../api/agent';
 import { LoadingComponent } from './LoadingComponent';
 import MeetupStore from '../stores/meetupStore';
@@ -31,17 +31,6 @@ const App = () => {
   const handleOpenCreateForm = () => {
     setSelectedMeeting(null);
     setEditMode(true);
-  };
-
-  const handleCreateMeeting = (meeting: IMeeting) => {
-    setSummitting(true);
-    agent.Meetings.create(meeting)
-      .then(() => {
-        setMeetings([...meetings, meeting]); //to combine the two
-        setSelectedMeeting(meeting);
-        setEditMode(false);
-      })
-      .then(() => setSummitting(false));
   };
 
   const handleEditMeeting = (meeting: IMeeting) => {
@@ -78,14 +67,11 @@ const App = () => {
 
   return (
     <Fragment>
-      <NavBar openCreateForm={handleOpenCreateForm} />
+      <NavBar />
       <Container style={{ marginTop: '7em' }}>
         <MeetingDashboard
-          meetings={meetupStore.meetings}
-          selectMeeting={handleSelectMeeting}
           setEditMode={setEditMode}
           setSelectedMeeting={setSelectedMeeting}
-          createMeeting={handleCreateMeeting}
           editMeeting={handleEditMeeting}
           deleteMeeting={handleDeleteMeeting}
           submitting={submitting}

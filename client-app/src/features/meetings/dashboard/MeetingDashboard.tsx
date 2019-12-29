@@ -1,19 +1,15 @@
-import React, { SyntheticEvent } from 'react';
+import React, { SyntheticEvent, useContext } from 'react';
 import { Grid } from 'semantic-ui-react';
 import { IMeeting } from '../../../app/models/meetings';
 import MeetingList from './MeetingList';
 import MeetingDetails from '../details/MeetingDetails';
 import { MeetingForm } from '../form/MeetingForm';
 import { observer } from 'mobx-react-lite';
+import MeetupStore from '../../../app/stores/meetupStore';
 
 interface IProps {
-  meetings: IMeeting[];
-  selectMeeting: (id: string) => void;
-  selectedMeeting: IMeeting | null;
-  editMode: boolean;
   setEditMode: (editMode: boolean) => void;
   setSelectedMeeting: (meeting: IMeeting | null) => void;
-  createMeeting: (meeting: IMeeting) => void;
   editMeeting: (meeting: IMeeting) => void;
   deleteMeeting: (event: SyntheticEvent<HTMLButtonElement>, id: string) => void;
   submitting: boolean;
@@ -21,18 +17,15 @@ interface IProps {
 }
 
 const MeetingDashboard: React.FC<IProps> = ({
-  meetings,
-  selectMeeting,
-  selectedMeeting,
-  editMode,
   setEditMode,
   setSelectedMeeting,
-  createMeeting,
   editMeeting,
   deleteMeeting,
   submitting,
   target
 }) => {
+  const meetingStore = useContext(MeetupStore);
+  const { selectedMeeting, editMode } = meetingStore;
   return (
     <Grid>
       <Grid.Column width={10}>
@@ -52,7 +45,6 @@ const MeetingDashboard: React.FC<IProps> = ({
         {editMode && (
           <MeetingForm
             key={(selectedMeeting && selectedMeeting.id) || 0}
-            createMeeting={createMeeting}
             editMeeting={editMeeting}
             setEditMode={setEditMode}
             meeting={selectedMeeting!}

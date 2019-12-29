@@ -16,11 +16,11 @@ const MeetingList: React.FC<IProps> = ({
   target
 }) => {
   const meetingStore = useContext(MeetupStore);
-  const { meetings, selectMeeting } = meetingStore;
+  const { meetingsByDate, selectMeeting } = meetingStore;
   return (
     <Segment clearing>
       <Item.Group divided>
-        {meetings.map(meeting => (
+        {meetingsByDate.map(meeting => (
           <Item key={meeting.id}>
             <Item.Content>
               <Item.Header as='a'>{meeting.title}</Item.Header>
