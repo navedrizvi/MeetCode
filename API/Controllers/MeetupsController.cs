@@ -11,10 +11,10 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MeetingsController : ControllerBase
+    public class MeetupsController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public MeetingsController(IMediator mediator)
+        public MeetupsController(IMediator mediator)
         {
             this._mediator = mediator;
         }
@@ -23,6 +23,12 @@ namespace API.Controllers
         public async Task<ActionResult<List<Meeting>>> List() //ct are not essential, just a ref
         {
             return await _mediator.Send(new List.Query());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Meeting>> Details(Guid id)
+        {
+            return await _mediator.Send(new Details.Query { Id = id });
         }
 
         [HttpPost]

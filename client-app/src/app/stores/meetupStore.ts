@@ -1,24 +1,36 @@
+import { action, computed, configure, observable, runInAction } from 'mobx';
 import { createContext, SyntheticEvent } from 'react';
-import { observable, action, computed, configure, runInAction } from 'mobx';
-import { IMeeting } from '../models/meetings';
 import agent from '../api/agent';
+import { IMeeting } from '../models/meetings';
 
 configure({ enforceActions: 'always' }); // makes sure that all functions that mutate state are wrapped with @action
 
 class MeetupStore {
   //instead of useState() that returns stateful variable and a fn to update it, we use  observables <-- dont need the set functions returned from useState
   @observable meetingRegistry = new Map();
-  @observable meetings: IMeeting[] = [];
   @observable loadingInitial = false; //for loader
-  @observable meeting: IMeeting | undefined;
-  @observable editMode = false;
+  @observable meeting: IMeeting | null = null;
   @observable submitting = false; //for loader
   @observable target = ''; //for loader to target  button. Isolate loading indicator for individual buttons
 
   @computed get meetingsByDate() {
     //in ascending dates order
-    return Array.from(this.meetingRegistry.values()).sort(
+    return this.groupMeetingsByDate(Array.from(this.meetingRegistry.values()));
+  }
+
+  groupMeetingsByDate(meetings: IMeeting[]) {
+    const sortedMeetings = meetings.sort(
       (a, b) => Date.parse(a.date) - Date.parse(b.date)
+    );
+    // Grouping together by dates (so same date would have multiple meetings at one index) , each key is a meetings array
+    return Object.entries(
+      sortedMeetings.reduce((meetings, meeting) => {
+        const date = meeting.date.split('T')[0];
+        meetings[date] = meetings[date]
+          ? [...meetings[date], meeting]
+          : [meeting]; //if key exists, then extend array, else just  add new entry
+        return meetings;
+      }, {} as { [key: string]: IMeeting[] })
     );
   }
 
@@ -50,7 +62,7 @@ class MeetupStore {
     } else {
       this.loadingInitial = true;
       try {
-        meeting = agent.Meetings.details(id);
+        meeting = await agent.Meetings.details(id);
         runInAction('getting meetup', () => {
           this.meeting = meeting;
           this.loadingInitial = false;
@@ -68,6 +80,9 @@ class MeetupStore {
   getMeeting = (id: string) => {
     return this.meetingRegistry.get(id);
   };
+  @action clearMeeting = () => {
+    this.meeting = null;
+  };
 
   @action createMeeting = async (meeting: IMeeting) => {
     this.submitting = true;
@@ -75,7 +90,6 @@ class MeetupStore {
       await agent.Meetings.create(meeting);
       runInAction('creating new meeting', () => {
         this.meetingRegistry.set(meeting.id, meeting);
-        this.editMode = false;
         this.submitting = false;
       });
     } catch (e) {
@@ -86,11 +100,6 @@ class MeetupStore {
     }
   };
 
-  @action selectMeeting = (id: string) => {
-    this.meeting = this.meetingRegistry.get(id);
-    this.editMode = false;
-  };
-
   @action editMeeting = async (meeting: IMeeting) => {
     this.submitting = true;
     try {
@@ -98,7 +107,6 @@ class MeetupStore {
       runInAction('editing meeting', () => {
         this.meetingRegistry.set(meeting.id, meeting);
         this.meeting = meeting;
-        this.editMode = false;
         this.submitting = false;
       });
     } catch (e) {
@@ -129,24 +137,6 @@ class MeetupStore {
       });
       console.log(e);
     }
-  };
-
-  @action openEditForm = (id: string) => {
-    this.meeting = this.meetingRegistry.get(id);
-    this.editMode = true;
-  };
-
-  @action cancelSelectedMeeting = () => {
-    this.meeting = undefined;
-  };
-
-  @action cancelFormOpen = () => {
-    this.editMode = false;
-  };
-
-  @action openCreateForm = () => {
-    this.editMode = true;
-    this.meeting = undefined;
   };
 }
 

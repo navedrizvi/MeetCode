@@ -35,12 +35,12 @@ const requests = {
 };
 
 const Meetings = {
-  list: (): Promise<IMeeting[]> => requests.get('/meetings'),
-  details: (id: string) => requests.get(`/meetings/${id}`),
-  create: (meeting: IMeeting) => requests.post('/meetings', meeting),
+  list: (): Promise<IMeeting[]> => requests.get('/meetups'),
+  details: (id: string) => requests.get(`/meetups/${id}`),
+  create: (meeting: IMeeting) => requests.post('/meetups', meeting),
   update: (meeting: IMeeting) =>
-    requests.put(`/meetings/${meeting.id}`, meeting),
-  delete: (id: string) => requests.del(`/meetings/${id}`)
+    requests.put(`/meetups/${meeting.id}`, meeting),
+  delete: (id: string) => requests.del(`/meetups/${id}`)
 };
 
 export default { Meetings };

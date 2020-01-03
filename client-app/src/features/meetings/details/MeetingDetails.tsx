@@ -1,42 +1,44 @@
-import React, { useContext } from 'react';
-import { Card, Button, Image } from 'semantic-ui-react';
+import React, { useContext, useEffect, Fragment } from 'react';
+import { Card, Button, Image, Grid } from 'semantic-ui-react';
 import MeetupStore from '../../../app/stores/meetupStore';
 import { observer } from 'mobx-react-lite';
+import { RouteComponentProps } from 'react-router';
+import { LoadingComponent } from '../../../app/layout/LoadingComponent';
+import { Link } from 'react-router-dom';
+import MeetingDetailedHeader from './MeetingDetailedHeader';
+import MeetingDetailedInfo from './MeetingDetailedInfo';
+import MeetingDetailedChat from './MeetingDetailedChat';
+import MeetingDetailedSidebar from './MeetingDetailedSidebar';
 
-const MeetingDetails: React.FC = () => {
+interface DetailParams {
+  id: string;
+}
+
+const MeetingDetails: React.FC<RouteComponentProps<DetailParams>> = ({
+  match,
+  history
+}) => {
   const meetingStore = useContext(MeetupStore);
-  const { meeting, openEditForm, cancelSelectedMeeting } = meetingStore; //call it meetup
+  const { meeting, loadMeetup, loadingInitial } = meetingStore;
+
+  useEffect(() => {
+    loadMeetup(match.params.id);
+  }, [loadMeetup, match.params.id]); //runs once when component mounts
+
+  if (loadingInitial || !meeting)
+    return <LoadingComponent content='Loading meetup...' />;
+
   return (
-    <Card>
-      <Image
-        src={`/assets/categoryImages/${meeting!.category}.jpg`}
-        wrapped
-        ui={false}
-      />
-      <Card.Content>
-        <Card.Header>{meeting!.title}</Card.Header>
-        <Card.Meta>
-          <span className='date'>{meeting!.date}</span>
-        </Card.Meta>
-        <Card.Description>{meeting!.description}</Card.Description>
-      </Card.Content>
-      <Card.Content extra>
-        <Button.Group widths={2}>
-          <Button
-            onClick={() => openEditForm(meeting!.id)}
-            basic
-            color='blue'
-            content='Edit'
-          ></Button>
-          <Button
-            onClick={cancelSelectedMeeting}
-            basic
-            color='grey'
-            content='Cancel'
-          ></Button>
-        </Button.Group>
-      </Card.Content>
-    </Card>
+    <Grid>
+      <Grid.Column width={10}>
+        <MeetingDetailedHeader meeting={meeting} />
+        <MeetingDetailedInfo meeting={meeting} />
+        <MeetingDetailedChat />
+      </Grid.Column>
+      <Grid.Column width={6}>
+        <MeetingDetailedSidebar />
+      </Grid.Column>
+    </Grid>
   );
 };
 

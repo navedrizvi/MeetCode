@@ -1,11 +1,9 @@
-import React, { useContext } from 'react';
-import { Menu, Container, Button } from 'semantic-ui-react';
-import MeetupStore from '../../app/stores/meetupStore';
 import { observer } from 'mobx-react-lite';
-import { Link, NavLink } from 'react-router-dom';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { Button, Container, Menu } from 'semantic-ui-react';
 
 const NavBar: React.FC = () => {
-  const meetingStore = useContext(MeetupStore);
   return (
     <Menu fixed='top' inverted>
       <Container>
@@ -13,7 +11,7 @@ const NavBar: React.FC = () => {
           <img
             src='/assets/logo.png'
             alt='logo.png'
-            style={{ marginRight: 10 }}
+            style={{ height: 50, width: 83 }}
           />
           MeetCode
         </Menu.Item>
