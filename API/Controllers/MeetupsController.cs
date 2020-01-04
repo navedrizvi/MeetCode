@@ -10,7 +10,7 @@ using System;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController] //gives automatic http status codes
     public class MeetupsController : ControllerBase
     {
         private readonly IMediator _mediator;

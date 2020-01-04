@@ -9,8 +9,7 @@ const NavBar: React.FC = () => {
       <Container>
         <Menu.Item header exact as={NavLink} to='/'>
           <img
-            src='/assets/logo.png'
-            alt='logo.png'
+            src='/assets/logo-edited.png'
             style={{ height: 50, width: 83 }}
           />
           MeetCode

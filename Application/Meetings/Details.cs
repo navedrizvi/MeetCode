@@ -1,9 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Errors;
 using Domain;
 using MediatR;
 using Persistence;
+using System.Net;
 
 namespace Application.Meetings
 {
@@ -25,6 +27,8 @@ namespace Application.Meetings
             public async Task<Meeting> Handle(Query request, CancellationToken cancellationToken)
             {
                 var meeting = await _context.Meetings.FindAsync(request.Id);
+                if (meeting == null)
+                    throw new RestException(HttpStatusCode.NotFound, new { meeting = "Not found" });
 
                 return meeting;
             }

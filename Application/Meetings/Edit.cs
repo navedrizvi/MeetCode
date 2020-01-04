@@ -3,7 +3,9 @@ using MediatR;
 using Persistence;
 using System;
 using System.Threading.Tasks;
-using Domain;
+using FluentValidation;
+using System.Net;
+using Application.Errors;
 
 namespace Application.Meetings
 {
@@ -20,6 +22,19 @@ namespace Application.Meetings
             public string Venue { get; set; }
         }
 
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Title).NotEmpty();
+                RuleFor(x => x.Description).NotEmpty();
+                RuleFor(x => x.Category).NotEmpty();
+                RuleFor(x => x.Date).NotEmpty();
+                RuleFor(x => x.City).NotEmpty();
+                RuleFor(x => x.Venue).NotEmpty();
+            }
+        }
+
         public class Handler : IRequestHandler<Command>
         {
             public DataContext _context { get; }
@@ -33,7 +48,7 @@ namespace Application.Meetings
                 var meeting = await _context.Meetings.FindAsync(request.Id);
 
                 if (meeting == null)
-                    throw new Exception("Could not find meeting");
+                    throw new RestException(HttpStatusCode.NotFound, new { meeting = "Not found" });
 
                 //now user can update single or many fields
                 meeting.Title = request.Title ?? meeting.Title;

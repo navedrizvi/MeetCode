@@ -1,9 +1,10 @@
+using System.Net;
 using System.Threading;
 using MediatR;
 using Persistence;
 using System;
 using System.Threading.Tasks;
-using Domain;
+using Application.Errors;
 
 namespace Application.Meetings
 {
@@ -26,7 +27,7 @@ namespace Application.Meetings
             {
                 var meeting = await _context.Meetings.FindAsync(request.Id);
                 if (meeting == null)
-                    throw new Exception("Could not find meeting");
+                    throw new RestException(HttpStatusCode.NotFound, new { meeting = "Not found" });
                 _context.Remove(meeting);
 
                 var success = await _context.SaveChangesAsync() > 0;
