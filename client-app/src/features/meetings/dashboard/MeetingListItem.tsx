@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Item, Segment, Label, Button, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import MeetupStore from '../../../app/stores/meetupStore';
 import { IMeeting } from '../../../app/models/meetings';
+import { format } from 'date-fns';
 
 interface IProps {
   meeting: IMeeting;
@@ -30,7 +30,7 @@ const MeetingListItem: React.FC<IProps> = ({ meeting }) => {
         </Item.Group>
       </Segment>
       <Segment>
-        <Icon name='clock' /> {meeting.date}
+        <Icon name='clock' /> {format(meeting.date, 'h:mm a')}
         <Icon name='marker' /> {meeting.city},{meeting.venue}
       </Segment>
       <Segment secondary>Attendees list here</Segment>

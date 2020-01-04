@@ -20,12 +20,12 @@ class MeetupStore {
 
   groupMeetingsByDate(meetings: IMeeting[]) {
     const sortedMeetings = meetings.sort(
-      (a, b) => Date.parse(a.date) - Date.parse(b.date)
+      (a, b) => a.date.getTime() - b.date.getTime()
     );
     // Grouping together by dates (so same date would have multiple meetings at one index) , each key is a meetings array
     return Object.entries(
       sortedMeetings.reduce((meetings, meeting) => {
-        const date = meeting.date.split('T')[0];
+        const date = meeting.date.toISOString().split('T')[0];
         meetings[date] = meetings[date]
           ? [...meetings[date], meeting]
           : [meeting]; //if key exists, then extend array, else just  add new entry
@@ -41,7 +41,7 @@ class MeetupStore {
       runInAction('loading meetings', () => {
         //name is optional, helps inside mobx dev tools
         meetings.forEach(meeting => {
-          meeting.date = meeting.date.split('.')[0]; //cleanup to remove date accuracy for inputs
+          meeting.date = new Date(meeting.date); //cleanup to get date from inputs
           this.meetingRegistry.set(meeting.id, meeting);
         });
         this.loadingInitial = false; // this is not fine, since it has its own scope
@@ -64,6 +64,7 @@ class MeetupStore {
       try {
         meeting = await agent.Meetings.details(id);
         runInAction('getting meetup', () => {
+          meeting.date = new Date(meeting.date);
           this.meeting = meeting;
           this.loadingInitial = false;
         });

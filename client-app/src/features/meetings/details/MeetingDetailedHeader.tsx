@@ -2,6 +2,8 @@ import React from 'react';
 import { Segment, Item, Header, Button, Image } from 'semantic-ui-react';
 import { IMeeting } from '../../../app/models/meetings';
 import { observer } from 'mobx-react-lite';
+import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 
 const meetingImageStyle = {
   filter: 'brightness(30%)' //reduces brighteness to 30%
@@ -40,7 +42,7 @@ const MeetingDetailedHeader: React.FC<{ meeting: IMeeting }> = ({
                   content={meeting.title}
                   style={{ color: 'white' }}
                 />
-                <p>{meeting.date}</p>
+                <p>{format(meeting.date, 'eeee do MMMM')}</p>
                 <p>
                   Hosted by <strong>Naved</strong>
                 </p>
@@ -52,7 +54,12 @@ const MeetingDetailedHeader: React.FC<{ meeting: IMeeting }> = ({
       <Segment clearing attached='bottom'>
         <Button color='teal'>Join Activity</Button>
         <Button>Cancel attendance</Button>
-        <Button color='orange' floated='right'>
+        <Button
+          as={Link}
+          to={`/manage/${meeting.id}`}
+          color='orange'
+          floated='right'
+        >
           Manage Event
         </Button>
       </Segment>

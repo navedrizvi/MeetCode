@@ -41,3 +41,5 @@ npm install mobx mobx-react-lite
 nuget install FluentValidation.AspNetCore
 
 npm install react-toastify <- notifications
+sudo npm install final-form
+sudo npm install react-final-form
