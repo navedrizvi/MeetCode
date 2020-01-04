@@ -16,7 +16,7 @@ const MeetingList: React.FC = () => {
           </Label>
           <Item.Group divided>
             {meetings.map(meeting => (
-              <MeetingListItem meeting={meeting} />
+              <MeetingListItem key={meeting.id} meeting={meeting} />
             ))}
           </Item.Group>
         </Fragment>

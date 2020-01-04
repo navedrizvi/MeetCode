@@ -21,14 +21,14 @@ namespace Application.Meetings
             private readonly DataContext _context;
             public Handler(DataContext context)
             {
-                this._context = context;
+                _context = context;
             }
 
             public async Task<Meeting> Handle(Query request, CancellationToken cancellationToken)
             {
                 var meeting = await _context.Meetings.FindAsync(request.Id);
                 if (meeting == null)
-                    throw new RestException(HttpStatusCode.NotFound, new { meeting = "Not found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { Meeting = "Not found" });
 
                 return meeting;
             }

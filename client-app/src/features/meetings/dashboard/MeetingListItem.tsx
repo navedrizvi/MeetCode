@@ -9,8 +9,6 @@ interface IProps {
 }
 
 const MeetingListItem: React.FC<IProps> = ({ meeting }) => {
-  const meetingStore = useContext(MeetupStore);
-  const { meetingsByDate, deleteMeeting, submitting, target } = meetingStore;
   return (
     <Segment.Group>
       <Segment>

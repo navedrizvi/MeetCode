@@ -48,7 +48,7 @@ namespace Application.Meetings
                 var meeting = await _context.Meetings.FindAsync(request.Id);
 
                 if (meeting == null)
-                    throw new RestException(HttpStatusCode.NotFound, new { meeting = "Not found" });
+                    throw new RestException(HttpStatusCode.NotFound, new { Meeting = "Not found" });
 
                 //now user can update single or many fields
                 meeting.Title = request.Title ?? meeting.Title;

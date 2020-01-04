@@ -1,22 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using API.Middleware;
+using Application.Meetings;
+using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Persistence;
-using Microsoft.EntityFrameworkCore.Design;
-using MediatR;
-using Application.Meetings;
-using FluentValidation.AspNetCore;
-using API.Middleware;
+using Microsoft.Extensions.Hosting;
 
 namespace API
 {
@@ -43,11 +36,12 @@ namespace API
                 });
             });
             services.AddMediatR(typeof(List.Handler).Assembly);
-            services.AddControllers()
+            services.AddMvc()
                     .AddFluentValidation(conf =>
                     {
                         conf.RegisterValidatorsFromAssemblyContaining<Create>();
-                    });
+                    })
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0); ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,7 +59,6 @@ namespace API
             app.UseAuthorization();
 
             app.UseCors("CorsPolicy");
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
