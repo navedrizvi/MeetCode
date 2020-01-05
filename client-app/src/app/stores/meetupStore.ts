@@ -1,7 +1,9 @@
+import { toast } from 'react-toastify';
 import { action, computed, configure, observable, runInAction } from 'mobx';
 import { createContext, SyntheticEvent } from 'react';
 import agent from '../api/agent';
 import { IMeeting } from '../models/meetings';
+import { history } from '../..';
 
 configure({ enforceActions: 'always' }); // makes sure that all functions that mutate state are wrapped with @action
 
@@ -59,6 +61,7 @@ class MeetupStore {
     let meeting = this.getMeeting(id);
     if (meeting) {
       this.meeting = meeting;
+      return meeting;
     } else {
       this.loadingInitial = true;
       try {
@@ -66,8 +69,10 @@ class MeetupStore {
         runInAction('getting meetup', () => {
           meeting.date = new Date(meeting.date);
           this.meeting = meeting;
+          this.meetingRegistry.set(meeting.id, meeting);
           this.loadingInitial = false;
         });
+        return meeting;
       } catch (e) {
         runInAction('get meetup error', () => {
           this.loadingInitial = false;
@@ -93,10 +98,12 @@ class MeetupStore {
         this.meetingRegistry.set(meeting.id, meeting);
         this.submitting = false;
       });
+      history.push(`/meetups/${meeting.id}`);
     } catch (e) {
       runInAction('create meeting error', () => {
         this.submitting = false;
       });
+      toast.error('Problem submitting data');
       console.log(e);
     }
   };
@@ -110,10 +117,12 @@ class MeetupStore {
         this.meeting = meeting;
         this.submitting = false;
       });
+      history.push(`/meetups/${meeting.id}`);
     } catch (e) {
       runInAction('edit meeting error', () => {
         this.submitting = false;
       });
+      toast.error('Problem submitting data');
       console.log(e);
     }
   };

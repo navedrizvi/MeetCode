@@ -8,24 +8,25 @@ export interface IMeeting {
   venue: string;
 }
 
-// export interface IMeetingFormValues extends Partial<IMeeting> {
-//   time?: Date;
-// }
+export interface IMeetingFormValues extends Partial<IMeeting> {
+  time?: Date;
+}
 
-// export class MeetingFormValues implements IMeetingFormValues {
-//   id?: string = undefined;
-//   title: string = '';
-//   category: string = '';
-//   description: string = '';
-//   date?: Date = undefined;
-//   time?: Date = undefined;
-//   city: string = '';
-//   venue: string = '';
+export class MeetingFormValues implements IMeetingFormValues {
+  id?: string = undefined;
+  title: string = '';
+  category: string = '';
+  description: string = '';
+  date?: Date = undefined;
+  time?: Date = undefined;
+  city: string = '';
+  venue: string = '';
 
-//   constructor(init?: IMeetingFormValues) {
-//     if (init && init.date) {
-//       init.time = init.date;
-//     }
-//     Object.assign(this, init);
-//   }
-// }
+  constructor(init?: IMeetingFormValues) {
+    // populates values by defualt in form
+    if (init && init.date) {
+      init.time = init.date;
+    }
+    Object.assign(this, init);
+  }
+}
