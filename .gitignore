@@ -53,3 +53,4 @@ ops/*.retry
 # IDE
 .idea/
 .vs/
+commands.txt
