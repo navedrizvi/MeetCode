@@ -60,7 +60,7 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## Screenshots
 
-![Product page](https://github.com/navedrizvi/MeetCode/tree/master/client-app/public/screenshots/1.png?raw=true 'Product page')
-![Show meetups](https://github.com/navedrizvi/MeetCode/tree/master/client-app/public/screenshots/2.png?raw=true 'Show meetups')
-![Create meetup](https://github.com/navedrizvi/MeetCode/tree/master/client-app/assets/screenshots/3.png?raw=true 'Create meetup')
-![Meetup details](https://github.com/navedrizvi/MeetCode/tree/master/client-app/assets/screenshots/4.png?raw=true 'Meetup details')
+![Product page](https://github.com/navedrizvi/MeetCode/blob/master/client-app/public/screenshots/1.png?raw=true 'Product page')
+![Show meetups](https://github.com/navedrizvi/MeetCode/blob/master/client-app/public/screenshots/2.png?raw=true 'Show meetups')
+![Create meetup](https://github.com/navedrizvi/MeetCode/blob/master/client-app/public/screenshots/3.png?raw=true 'Create meetup')
+![Meetup details](https://github.com/navedrizvi/MeetCode/blob/master/client-app/public/screenshots/4.png?raw=true 'Meetup details')
