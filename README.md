@@ -1,6 +1,6 @@
-# Project Title
+# MeetCode
 
-One Paragraph of project description goes here
+A meetup planning platform
 
 ## Getting Started
 
