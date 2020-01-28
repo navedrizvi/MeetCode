@@ -6,14 +6,6 @@ A meetup planning platform
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
-
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
-
 ### Installing
 
 Make sure to have the latest version of [dotnet](https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x) cli, [node](https://nodejs.org/en/download/) and [npm](https://www.npmjs.com/get-npm) installed
@@ -61,6 +53,9 @@ End with an example of getting some data out of the system or using it for a lit
 ## Screenshots
 
 ![Product page](https://github.com/navedrizvi/MeetCode/blob/master/client-app/public/screenshots/1.png?raw=true 'Product page')
+
 ![Show meetups](https://github.com/navedrizvi/MeetCode/blob/master/client-app/public/screenshots/2.png?raw=true 'Show meetups')
+
 ![Create meetup](https://github.com/navedrizvi/MeetCode/blob/master/client-app/public/screenshots/3.png?raw=true 'Create meetup')
+
 ![Meetup details](https://github.com/navedrizvi/MeetCode/blob/master/client-app/public/screenshots/4.png?raw=true 'Meetup details')
