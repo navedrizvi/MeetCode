@@ -14,6 +14,7 @@ Install required client-side dependencies:
 
 ```
 npm install uuid --unsafe-perm=true
+npm install -g create-react-app
 npm install mobx mobx-react-lite react-toastify final-form react-final-form revalidate
 ```
 
@@ -37,15 +38,14 @@ npm start
 Run API project:
 
 ```
-cd API
-dotnet watch run -p API/
+dotnet watch run -p API
 ```
 
 End with an example of getting some data out of the system or using it for a little demo
 
 ## Built With
 
-- [.NET Web API](https://docs.microsoft.com/en-us/dotnet/core/) - Backend web api
+- [.NET Core Web API](https://docs.microsoft.com/en-us/dotnet/core/) - Backend web api
 - [Create React App](https://reactjs.org/docs/create-a-new-react-app.html) - The SPA library used
 - [Semantic UI](https://react.semantic-ui.com/) - Styled React Components
 - [TypeScript](https://www.typescriptlang.org/)
